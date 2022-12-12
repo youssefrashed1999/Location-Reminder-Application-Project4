@@ -73,5 +73,14 @@ class SaveReminderViewModelTest {
         //assert that the error message is shown
         assertThat(saveReminderViewModel.showSnackBarInt.getOrAwaitValue(),`is`(R.string.err_enter_title))
     }
+    @Test
+    fun saveReminderWithMissingLocation_ErrorShown(){
+        //dummy reminder
+        val reminder=ReminderDataItem("x","x","",0.0,0.0)
+        //assert that the validation function returns false
+        assertThat(saveReminderViewModel.validateEnteredData(reminder),`is`(false))
+        //assert that the error message is shown
+        assertThat(saveReminderViewModel.showSnackBarInt.getOrAwaitValue(),`is`(R.string.err_select_location))
+    }
 
 }
