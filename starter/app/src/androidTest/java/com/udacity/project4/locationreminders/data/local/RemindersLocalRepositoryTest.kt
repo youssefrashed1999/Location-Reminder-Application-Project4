@@ -58,4 +58,19 @@ class RemindersLocalRepositoryTest {
         assertThat(result.data.longitude,`is`(reminder.longitude))
         assertThat(result.data.latitude,`is`(reminder.latitude))
     }
+    @Test
+    fun saveReminders_deleteAllReminders()= runBlocking {
+        //GIVEN - 2 new reminders saved in the database
+        val reminder1=ReminderDTO("Youssef","Mohamed","Rashed",1.0,1.0)
+        val reminder2=ReminderDTO("Mohamed","Ahmed","Mabrouk",2.0,2.0)
+        localRepository.saveReminder(reminder1)
+        localRepository.saveReminder(reminder2)
+        //WHEN - reminders are deleted then retrieved
+        localRepository.deleteAllReminders()
+        val result=localRepository.getReminders()
+        //THEN - retrieved list is empty
+        assertThat(result.succeeded,`is`(true))
+        result as Result.Success
+        assertThat(result.data.isEmpty(),`is`(true))
+    }
 }
