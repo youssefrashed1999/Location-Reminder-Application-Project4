@@ -41,4 +41,21 @@ class RemindersLocalRepositoryTest {
     }
     @After
     fun close()=db.close()
+    @Test
+    fun saveReminder_getReminder()= runBlocking {
+        //GIVEN - a new reminder saved in the database
+        val reminder=ReminderDTO("Youssef","Mohamed","Rashed",1.0,1.0)
+        localRepository.saveReminder(reminder)
+        //WHEN - reminder is retrieved by id
+        val result=localRepository.getReminder(reminder.id)
+        //THEN - same reminder is returned
+        assertThat(result.succeeded,`is`(true))
+        result as Result.Success
+        assertThat(result.data.id,`is`(reminder.id))
+        assertThat(result.data.title,`is`(reminder.title))
+        assertThat(result.data.description,`is`(reminder.description))
+        assertThat(result.data.location,`is`(reminder.location))
+        assertThat(result.data.longitude,`is`(reminder.longitude))
+        assertThat(result.data.latitude,`is`(reminder.latitude))
+    }
 }
