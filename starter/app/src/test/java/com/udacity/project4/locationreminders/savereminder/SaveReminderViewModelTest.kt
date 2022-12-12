@@ -3,6 +3,7 @@ package com.udacity.project4.locationreminders.savereminder
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.udacity.project4.R
 import com.udacity.project4.locationreminders.MainCoroutineRule
 import com.udacity.project4.locationreminders.data.FakeDataSource
 import com.udacity.project4.locationreminders.getOrAwaitValue
@@ -62,6 +63,15 @@ class SaveReminderViewModelTest {
         mainCoroutineRule.resumeDispatcher()
         //assert that loading indicator is gone
         assertThat(saveReminderViewModel.showLoading.getOrAwaitValue(), `is`(false))
+    }
+    @Test
+    fun saveReminderWithMissingTitle_ErrorShown(){
+        //dummy reminder
+        val reminder=ReminderDataItem("","x","x",0.0,0.0)
+        //assert that the validation function returns false
+        assertThat(saveReminderViewModel.validateEnteredData(reminder),`is`(false))
+        //assert that the error message is shown
+        assertThat(saveReminderViewModel.showSnackBarInt.getOrAwaitValue(),`is`(R.string.err_enter_title))
     }
 
 }
