@@ -56,14 +56,10 @@ class SelectLocationFragment : BaseFragment(),OnMapReadyCallback {
         setHasOptionsMenu(true)
         setDisplayHomeAsUpEnabled(true)
 
-
-
-//        TODO: add style to the map
-
-
 //        TODO: call this function after the user confirms on the selected location
-        onLocationSelected()
-
+        binding.saveLocation.setOnClickListener {
+            onLocationSelected()
+        }
         return binding.root
     }
 
@@ -71,6 +67,12 @@ class SelectLocationFragment : BaseFragment(),OnMapReadyCallback {
         //        TODO: When the user confirms on the selected location,
         //         send back the selected location details to the view model
         //         and navigate back to the previous fragment to save the reminder and add the geofence
+        marker?.let {
+            _viewModel.latitude.value=it.position.latitude
+            _viewModel.longitude.value=it.position.longitude
+            _viewModel.reminderSelectedLocationStr.value=it.title
+            _viewModel.navigationCommand.value=NavigationCommand.Back
+        }
     }
 
     //TODO: add the map setup implementation
