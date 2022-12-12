@@ -52,7 +52,8 @@ class SelectLocationFragment : BaseFragment(),OnMapReadyCallback {
 
         binding.viewModel = _viewModel
         binding.lifecycleOwner = this
-
+        val mapFragment=childFragmentManager.findFragmentById(R.id.map_fragment) as SupportMapFragment
+        mapFragment.getMapAsync(this)
         setHasOptionsMenu(true)
         setDisplayHomeAsUpEnabled(true)
 
