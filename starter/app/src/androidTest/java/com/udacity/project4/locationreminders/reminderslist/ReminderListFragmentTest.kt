@@ -9,11 +9,16 @@ import androidx.navigation.Navigation
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
 import com.udacity.project4.R
 import com.udacity.project4.locationreminders.data.ReminderDataSource
+import com.udacity.project4.locationreminders.data.dto.ReminderDTO
 import com.udacity.project4.locationreminders.data.local.LocalDB
 import com.udacity.project4.locationreminders.data.local.RemindersLocalRepository
 import com.udacity.project4.locationreminders.savereminder.SaveReminderViewModel
@@ -96,5 +101,21 @@ fun clickOnAddReminderButton_NavigateToSaveReminderFragment()
     )
 }
 //    TODO: test the displayed data on the UI.
+@Test
+fun saveReminder_DisplayInUI()
+{
+    //dummy reminder
+    val reminder= ReminderDTO("Youssef","Mohamed","Rashed",1.0,1.0)
+    //save the reminder
+    runBlocking {
+        repository.saveReminder(reminder)
+    }
+    //  GIVEN - on the reminders List screen
+    val scenario= launchFragmentInContainer<ReminderListFragment>(Bundle(),R.style.AppTheme)
+    //  THEN - verify data displayed
+    onView(withId(R.id.title)).check(matches(withText(reminder.title)))
+    onView(withId(R.id.description)).check(matches(withText(reminder.description)))
+    onView(withId(R.id.locationSelected)).check(matches(withText(reminder.location)))
+}
 //    TODO: add testing for the error messages.
 }
