@@ -24,7 +24,18 @@ import org.junit.Test
 //Unit test the DAO
 @SmallTest
 class RemindersDaoTest {
-
 //    TODO: Add testing implementation to the RemindersDao.kt
-
+    //exectues each task synchronously using architecture component
+    @get:Rule
+    var instantTaskExecutorRule=InstantTaskExecutorRule()
+    private lateinit var db:RemindersDatabase
+    @Before
+    fun initDb(){
+        db=Room.inMemoryDatabaseBuilder(
+            ApplicationProvider.getApplicationContext(),
+            RemindersDatabase::class.java).build()
+    }
+    @After
+    fun closeDb() = db.close()
+    
 }
