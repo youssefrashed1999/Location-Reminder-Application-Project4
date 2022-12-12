@@ -87,4 +87,14 @@ class RemindersLocalRepositoryTest {
         result as Result.Success
         assertThat(result.data.size,`is`(2))
     }
+    @Test
+    fun saveReminder_getReminderNotInDatabase()= runBlocking {
+        //GIVEN - a new reminder saved in the database
+        val reminder=ReminderDTO("Youssef","Mohamed","Rashed",1.0,1.0)
+        localRepository.saveReminder(reminder)
+        //WHEN - get reminder with id not saved in the database
+        val result=localRepository.getReminder("WSXR")
+        //THEN -error occurred
+        assertThat(result.error,`is`(true))
+    }
 }
