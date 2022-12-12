@@ -73,4 +73,18 @@ class RemindersLocalRepositoryTest {
         result as Result.Success
         assertThat(result.data.isEmpty(),`is`(true))
     }
+    @Test
+    fun saveReminders_getReminders()= runBlocking {
+        //GIVEN - 2 new reminders saved in the database
+        val reminder1=ReminderDTO("Youssef","Mohamed","Rashed",1.0,1.0)
+        val reminder2=ReminderDTO("Mohamed","Ahmed","Mabrouk",2.0,2.0)
+        localRepository.saveReminder(reminder1)
+        localRepository.saveReminder(reminder2)
+        //WHEN - reminders are retrieved
+        val result=localRepository.getReminders()
+        //THEN - list with the two reminders are retrieved
+        assertThat(result.succeeded,`is`(true))
+        result as Result.Success
+        assertThat(result.data.size,`is`(2))
+    }
 }
