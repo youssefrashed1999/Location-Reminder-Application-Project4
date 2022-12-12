@@ -25,10 +25,11 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.test.get
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.dsl.module
-import org.koin.test.get
+import org.koin.test.AutoCloseKoinTest
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
 
@@ -36,7 +37,7 @@ import org.mockito.Mockito.verify
 @ExperimentalCoroutinesApi
 //UI Testing
 @MediumTest
-class ReminderListFragmentTest {
+class ReminderListFragmentTest:AutoCloseKoinTest() {
     private lateinit var repository: ReminderDataSource
     //execute each task synchronously using architecture component
     @get:Rule
@@ -78,6 +79,22 @@ class ReminderListFragmentTest {
         }
     }
 //    TODO: test the navigation of the fragments.
+@Test
+fun clickOnAddReminderButton_NavigateToSaveReminderFragment()
+{
+    //  GIVEN - on the reminders List screen
+    val scenario= launchFragmentInContainer<ReminderListFragment>(Bundle(),R.style.AppTheme)
+    val navController= mock(NavController::class.java)
+    scenario.onFragment {
+        Navigation.setViewNavController(it.view!!,navController)
+    }
+    //WHEN - click on add reminder button
+    onView(withId(R.id.addReminderFAB)).perform(click())
+    //THEN - verify that we navigate to save reminder fragment
+    verify(navController).navigate(
+        ReminderListFragmentDirections.toSaveReminder()
+    )
+}
 //    TODO: test the displayed data on the UI.
 //    TODO: add testing for the error messages.
 }
