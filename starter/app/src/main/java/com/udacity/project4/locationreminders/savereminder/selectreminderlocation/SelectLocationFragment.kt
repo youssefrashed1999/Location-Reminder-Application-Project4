@@ -57,7 +57,7 @@ class SelectLocationFragment : BaseFragment(),OnMapReadyCallback {
         setDisplayHomeAsUpEnabled(true)
 
 
-//        TODO: zoom to the user location after taking his permission
+
 //        TODO: add style to the map
 
 
@@ -77,6 +77,7 @@ class SelectLocationFragment : BaseFragment(),OnMapReadyCallback {
     override fun onMapReady(p0: GoogleMap) {
         map=p0
         setPoiClick(map)
+        styleMap(map)
         enableMyLocation()
     }
     //TODO: put a marker to location that the user selected
@@ -133,6 +134,14 @@ class SelectLocationFragment : BaseFragment(),OnMapReadyCallback {
                 val myLocation=LatLng(location.latitude,location.longitude)
                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation,15f))
             }
+        }
+    }
+    //TODO: add style to the map
+    private fun styleMap(map: GoogleMap){
+        try{
+            map.setMapStyle(MapStyleOptions.loadRawResourceStyle(requireContext(),R.raw.map_style))
+        }
+        catch (e:Resources.NotFoundException){
         }
     }
 
