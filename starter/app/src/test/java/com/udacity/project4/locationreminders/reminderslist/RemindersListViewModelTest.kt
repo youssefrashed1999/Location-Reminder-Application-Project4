@@ -5,8 +5,10 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.udacity.project4.locationreminders.MainCoroutineRule
 import com.udacity.project4.locationreminders.data.FakeDataSource
+import com.udacity.project4.locationreminders.data.dto.ReminderDTO
 import com.udacity.project4.locationreminders.getOrAwaitValue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runBlockingTest
 import org.hamcrest.MatcherAssert
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.Is
@@ -69,5 +71,19 @@ class RemindersListViewModelTest {
         remindersListViewModel.loadReminders()
         //then an error message should appear
         assertThat(remindersListViewModel.showSnackBar.getOrAwaitValue(),`is`("Error has occurred"))
+    }
+    @Test
+    fun loadRemindersWhenRemindersAreSaved_returnsReminders()=mainCoroutineRule.runBlockingTest {
+        //load the live data before adding any reminders
+        remindersListViewModel.loadReminders()
+        //should return an empty list
+        assertThat(remindersListViewModel.remindersList.getOrAwaitValue().isEmpty(),`is`(true))
+        //dummy values
+        val reminder= ReminderDTO("x","x","x",0.0,0.0)
+        remindersDataSource.saveReminder(reminder)
+        //load the reminder to the live data
+        remindersListViewModel.loadReminders()
+        //should return a non-empty list
+        assertThat(remindersListViewModel.remindersList.getOrAwaitValue().isEmpty(),`is`(false))
     }
 }
