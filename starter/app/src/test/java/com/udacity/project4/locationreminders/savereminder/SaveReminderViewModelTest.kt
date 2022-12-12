@@ -5,11 +5,18 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.udacity.project4.locationreminders.MainCoroutineRule
 import com.udacity.project4.locationreminders.data.FakeDataSource
+import com.udacity.project4.locationreminders.getOrAwaitValue
+import com.udacity.project4.locationreminders.reminderslist.ReminderDataItem
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.hamcrest.MatcherAssert
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.core.Is
+import org.hamcrest.core.Is.`is`
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
+import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.core.context.stopKoin
 import org.robolectric.annotation.Config
@@ -40,6 +47,21 @@ class SaveReminderViewModelTest {
     @After
     fun stop(){
         stopKoin()
+    }
+    @Test
+    fun saveReminder_showLoading(){
+        //dummy reminder
+        val reminder= ReminderDataItem("x","x","x",0.0,0.0)
+        //pause dispatcher to verify values
+        mainCoroutineRule.pauseDispatcher()
+        //add the dummy reminder
+        saveReminderViewModel.saveReminder(reminder)
+        //assert that loading indicator is shown
+        assertThat(saveReminderViewModel.showLoading.getOrAwaitValue(),`is`(true))
+        //execute pending coroutine functions
+        mainCoroutineRule.resumeDispatcher()
+        //assert that loading indicator is gone
+        assertThat(saveReminderViewModel.showLoading.getOrAwaitValue(), `is`(false))
     }
 
 }
