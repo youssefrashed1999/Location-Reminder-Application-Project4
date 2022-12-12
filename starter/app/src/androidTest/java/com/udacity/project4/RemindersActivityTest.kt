@@ -1,5 +1,6 @@
 package com.udacity.project4
 
+import android.app.Activity
 import android.app.Application
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
@@ -7,10 +8,10 @@ import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.action.ViewActions.typeText
+import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.RootMatchers
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -25,6 +26,9 @@ import com.udacity.project4.util.DataBindingIdlingResource
 import com.udacity.project4.util.monitorActivity
 import com.udacity.project4.utils.EspressoIdlingResource
 import kotlinx.coroutines.runBlocking
+import org.hamcrest.CoreMatchers
+import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.CoreMatchers.not
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -129,6 +133,40 @@ class RemindersActivityTest :
         //close the scenario
         activityScenario.close()
     }
-
+    @Test
+    fun saveReminderWithAllDetails_ShowSuccess(){
+        //start Reminders Activity
+        val activityScenario= ActivityScenario.launch(RemindersActivity::class.java)
+        dataBindingIdlingResource.monitorActivity(activityScenario)
+        //click of add new reminder button
+        onView(withId(R.id.addReminderFAB)).perform(click())
+        //Add title
+        onView(withId(R.id.reminderTitle)).perform(typeText("New Title"))
+        //Add description
+        onView(withId(R.id.reminderDescription)).perform(typeText("New Description"))
+        //close the keyboard
+        Espresso.closeSoftKeyboard()
+        //Click on select location button
+        onView(withId(R.id.selectLocation)).perform(click())
+        //click a long click on the map to get a location
+        onView((withId(R.id.map_fragment))).perform(longClick())
+        //click save to save the location
+        onView((withId(R.id.saveLocation))).perform(click())
+        //click on save button to save reminder
+        onView(withId(R.id.saveReminder)).perform(click())
+        //check for the toast
+        onView(withText(R.string.reminder_saved))
+            .inRoot(RootMatchers.withDecorView(not(`is`(getActivity(activityScenario).window.decorView))))
+            .check(matches(isDisplayed()))
+        //close the scenario
+        activityScenario.close()
+    }
+    private fun getActivity(activityScenario: ActivityScenario<RemindersActivity>): Activity {
+        lateinit var activity: Activity
+        activityScenario.onActivity {
+            activity=it
+        }
+        return activity
+    }
 
 }
