@@ -29,11 +29,13 @@ import com.udacity.project4.locationreminders.savereminder.SaveReminderViewModel
 import com.udacity.project4.utils.setDisplayHomeAsUpEnabled
 import org.koin.android.ext.android.inject
 
-class SelectLocationFragment : BaseFragment() {
+class SelectLocationFragment : BaseFragment(),OnMapReadyCallback {
 
     //Use Koin to get the view model of the SaveReminder
     override val _viewModel: SaveReminderViewModel by inject()
     private lateinit var binding: FragmentSelectLocationBinding
+    private lateinit var map:GoogleMap
+    private var marker:Marker?=null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -47,10 +49,9 @@ class SelectLocationFragment : BaseFragment() {
         setHasOptionsMenu(true)
         setDisplayHomeAsUpEnabled(true)
 
-//        TODO: add the map setup implementation
+
 //        TODO: zoom to the user location after taking his permission
 //        TODO: add style to the map
-//        TODO: put a marker to location that the user selected
 
 
 //        TODO: call this function after the user confirms on the selected location
@@ -63,6 +64,25 @@ class SelectLocationFragment : BaseFragment() {
         //        TODO: When the user confirms on the selected location,
         //         send back the selected location details to the view model
         //         and navigate back to the previous fragment to save the reminder and add the geofence
+    }
+
+    //TODO: add the map setup implementation
+    override fun onMapReady(p0: GoogleMap) {
+        map=p0
+        setPoiClick(map)
+    }
+    //TODO: put a marker to location that the user selected
+    private fun setPoiClick(map: GoogleMap) {
+        map.setOnPoiClickListener { poi ->
+            //clear any previous markers
+            map.clear()
+            marker = map.addMarker(
+                MarkerOptions()
+                    .position(poi.latLng)
+                    .title(poi.name)
+            )
+            marker?.showInfoWindow()
+        }
     }
 
 
