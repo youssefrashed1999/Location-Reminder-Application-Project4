@@ -37,5 +37,20 @@ class RemindersDaoTest {
     }
     @After
     fun closeDb() = db.close()
-    
+    @Test
+    fun insertReminderAndGetByID()= runBlockingTest {
+        //GIVEN - insert a reminder
+        val reminder=ReminderDTO("Youssef","Mohamed","Rashed",1.0,2.0)
+        db.reminderDao().saveReminder(reminder)
+        //WHEN - get the reminders from the database
+        val loaded=db.reminderDao().getReminderById(reminder.id)
+        //THEN - the loaded data contains the expected values
+        assertThat<ReminderDTO>(loaded as ReminderDTO, notNullValue())
+        assertThat(loaded.id,`is`(reminder.id))
+        assertThat(loaded.title,`is`(reminder.title))
+        assertThat(loaded.description,`is`(reminder.description))
+        assertThat(loaded.location,`is`(reminder.location))
+        assertThat(loaded.longitude,`is`(reminder.longitude))
+        assertThat(loaded.latitude,`is`(reminder.latitude))
+    }
 }
