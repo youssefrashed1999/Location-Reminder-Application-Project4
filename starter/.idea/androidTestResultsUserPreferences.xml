@@ -17,6 +17,20 @@
             </AndroidTestResultsTableState>
           </value>
         </entry>
+        <entry key="-1962401843">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="0271410782404026" value="120" />
+                  <entry key="Duration" value="90" />
+                  <entry key="Infinix&#10; Infinix X572" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
         <entry key="-271820233">
           <value>
             <AndroidTestResultsTableState>
@@ -73,6 +87,20 @@
           </value>
         </entry>
         <entry key="865743026">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="0271410782404026" value="120" />
+                  <entry key="Duration" value="90" />
+                  <entry key="Infinix&#10; Infinix X572" value="120" />
+                  <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="1109255715">
           <value>
             <AndroidTestResultsTableState>
               <option name="preferredColumnWidths">

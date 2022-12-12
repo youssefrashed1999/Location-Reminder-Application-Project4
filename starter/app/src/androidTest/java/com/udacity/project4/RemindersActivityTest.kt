@@ -8,6 +8,7 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers
@@ -93,6 +94,7 @@ class RemindersActivityTest :
         IdlingRegistry.getInstance().unregister(EspressoIdlingResource.countingIdlingResource)
         IdlingRegistry.getInstance().unregister(dataBindingIdlingResource)
     }
+    //    TODO: add End to End testing to the app
     @Test
     fun saveReminderWithNoData_ShowTitleError(){
         //start Reminders Activity
@@ -107,6 +109,26 @@ class RemindersActivityTest :
         //close the scenario
         activityScenario.close()
     }
-//    TODO: add End to End testing to the app
+    @Test
+    fun saveReminderWithNoLocation_ShowLocationError(){
+        //start Reminders Activity
+        val activityScenario= ActivityScenario.launch(RemindersActivity::class.java)
+        dataBindingIdlingResource.monitorActivity(activityScenario)
+        //click of add new reminder button
+        onView(withId(R.id.addReminderFAB)).perform(click())
+        //Add title
+        onView(withId(R.id.reminderTitle)).perform(typeText("New Title"))
+        //Add description
+        onView(withId(R.id.reminderDescription)).perform(typeText("New Description"))
+        //close the keyboard
+        Espresso.closeSoftKeyboard()
+        //click on save button without adding location
+        onView(withId(R.id.saveReminder)).perform(click())
+        //The error message should be a location error message
+        onView(withText(R.string.err_select_location)).check(matches(isDisplayed()))
+        //close the scenario
+        activityScenario.close()
+    }
+
 
 }
