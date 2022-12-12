@@ -2,14 +2,17 @@ package com.udacity.project4.locationreminders.savereminder.selectreminderlocati
 
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.content.res.Resources
+import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.google.android.gms.common.api.ApiException
@@ -36,6 +39,10 @@ class SelectLocationFragment : BaseFragment(),OnMapReadyCallback {
     private lateinit var binding: FragmentSelectLocationBinding
     private lateinit var map:GoogleMap
     private var marker:Marker?=null
+    private val REQUEST_LOCATION_PERMISSION=1
+    private val fusedLocationProviderClient by lazy {
+        LocationServices.getFusedLocationProviderClient(requireActivity())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -70,6 +77,7 @@ class SelectLocationFragment : BaseFragment(),OnMapReadyCallback {
     override fun onMapReady(p0: GoogleMap) {
         map=p0
         setPoiClick(map)
+        enableMyLocation()
     }
     //TODO: put a marker to location that the user selected
     private fun setPoiClick(map: GoogleMap) {
@@ -84,7 +92,49 @@ class SelectLocationFragment : BaseFragment(),OnMapReadyCallback {
             marker?.showInfoWindow()
         }
     }
-
+    //TODO: zoom to the user location after taking his permission
+    //returns true if the application has access to user's location
+    private fun isPermissionGranted():Boolean{
+        return ContextCompat
+            .checkSelfPermission(requireContext()
+                ,Manifest.permission.ACCESS_FINE_LOCATION)===PackageManager.PERMISSION_GRANTED
+    }
+    @SuppressLint("MissingPermission")
+    private fun enableMyLocation() {
+        if (isPermissionGranted()) {
+            map.isMyLocationEnabled=true
+            zoomToMyLocation()
+        }
+        else {
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf<String>(Manifest.permission.ACCESS_FINE_LOCATION),
+                REQUEST_LOCATION_PERMISSION
+            )
+        }
+    }
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray) {
+        // Check if location permissions are granted and if so enable the
+        // location data layer.
+        if (requestCode == REQUEST_LOCATION_PERMISSION) {
+            if (grantResults.size > 0 && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                enableMyLocation()
+            }
+        }
+    }
+    //zooms to the user's current location
+    @SuppressLint("MissingPermission")
+    private fun zoomToMyLocation(){
+        fusedLocationProviderClient.lastLocation.addOnSuccessListener { location: Location?->
+            if (location!=null){
+                val myLocation=LatLng(location.latitude,location.longitude)
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation,15f))
+            }
+        }
+    }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.map_options, menu)
