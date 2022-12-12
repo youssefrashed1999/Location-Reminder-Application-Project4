@@ -31,6 +31,9 @@ private const val REQUEST_TURN_DEVICE_LOCATION_ON = 29
 private const val LOCATION_PERMISSION_INDEX = 0
 private const val BACKGROUND_LOCATION_PERMISSION_INDEX = 1
 class SaveReminderFragment : BaseFragment() {
+    companion object{
+        internal const val ACTION_GEOFENCE_EVENT="SaveReminderFragment.reminder.action.ACTION_GEOFENCE_EVENT"
+    }
     //Get the view model this time as a single to be shared with the another fragment
     override val _viewModel: SaveReminderViewModel by inject()
     private lateinit var binding: FragmentSaveReminderBinding
