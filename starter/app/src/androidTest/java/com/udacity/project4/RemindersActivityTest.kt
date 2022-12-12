@@ -161,6 +161,32 @@ class RemindersActivityTest :
         //close the scenario
         activityScenario.close()
     }
+    @Test
+    fun saveReminderWithNoDescription_ShowSuccess(){
+        //start Reminders Activity
+        val activityScenario= ActivityScenario.launch(RemindersActivity::class.java)
+        dataBindingIdlingResource.monitorActivity(activityScenario)
+        //click of add new reminder button
+        onView(withId(R.id.addReminderFAB)).perform(click())
+        //Add title
+        onView(withId(R.id.reminderTitle)).perform(typeText("New Title"))
+        //close the keyboard
+        Espresso.closeSoftKeyboard()
+        //Click on select location button
+        onView(withId(R.id.selectLocation)).perform(click())
+        //click a long click on the map to get a location
+        onView((withId(R.id.map_fragment))).perform(longClick())
+        //click save to save the location
+        onView((withId(R.id.saveLocation))).perform(click())
+        //click on save button to save reminder
+        onView(withId(R.id.saveReminder)).perform(click())
+        //check for the toast
+        onView(withText(R.string.reminder_saved))
+            .inRoot(RootMatchers.withDecorView(not(`is`(getActivity(activityScenario).window.decorView))))
+            .check(matches(isDisplayed()))
+        //close the scenario
+        activityScenario.close()
+    }
     private fun getActivity(activityScenario: ActivityScenario<RemindersActivity>): Activity {
         lateinit var activity: Activity
         activityScenario.onActivity {
