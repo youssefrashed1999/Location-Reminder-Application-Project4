@@ -118,4 +118,16 @@ fun saveReminder_DisplayInUI()
     onView(withId(R.id.locationSelected)).check(matches(withText(reminder.location)))
 }
 //    TODO: add testing for the error messages.
+@Test
+fun noReminders_CheckUI()
+{
+    //Delete all reminders
+    runBlocking {
+        repository.deleteAllReminders()
+    }
+    //  GIVEN - on the reminders List screen
+    val scenario= launchFragmentInContainer<ReminderListFragment>(Bundle(),R.style.AppTheme)
+    //  THEN - no data textview is displayed
+    onView(withId(R.id.noDataTextView)).check(matches(ViewMatchers.isDisplayed()))
+}
 }
