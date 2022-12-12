@@ -31,6 +31,7 @@ import com.udacity.project4.databinding.FragmentSelectLocationBinding
 import com.udacity.project4.locationreminders.savereminder.SaveReminderViewModel
 import com.udacity.project4.utils.setDisplayHomeAsUpEnabled
 import org.koin.android.ext.android.inject
+import java.util.*
 
 class SelectLocationFragment : BaseFragment(),OnMapReadyCallback {
 
@@ -80,6 +81,7 @@ class SelectLocationFragment : BaseFragment(),OnMapReadyCallback {
     override fun onMapReady(p0: GoogleMap) {
         map=p0
         setPoiClick(map)
+        setMapLongClick(map)
         styleMap(map)
         enableMyLocation()
     }
@@ -145,6 +147,26 @@ class SelectLocationFragment : BaseFragment(),OnMapReadyCallback {
             map.setMapStyle(MapStyleOptions.loadRawResourceStyle(requireContext(),R.raw.map_style))
         }
         catch (e:Resources.NotFoundException){
+        }
+    }
+    //add it for the testing
+    private fun setMapLongClick(map: GoogleMap){
+        map.setOnMapLongClickListener { latLng ->
+            //clear any previous markers
+            map.clear()
+            val snippet = String.format(
+                Locale.getDefault(),
+                "Lat: %1$.5f, Long: %2$.5f",
+                latLng.latitude,
+                latLng.longitude
+            )
+            marker=map.addMarker(
+                MarkerOptions()
+                    .position(latLng)
+                    .title(getString(R.string.dropped_pin))
+                    .snippet(snippet)
+            )
+            marker?.showInfoWindow()
         }
     }
 
