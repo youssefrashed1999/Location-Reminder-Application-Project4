@@ -62,4 +62,12 @@ class RemindersListViewModelTest {
         //assert that the loading indicator is hidden
         assertThat(remindersListViewModel.showLoading.getOrAwaitValue(), `is`(false))
     }
+    @Test
+    fun loadRemindersWhenRemindersAreUnavailable_callErrorToDisplay(){
+        //make the repository returns error
+        remindersDataSource.setReturnsError(true)
+        remindersListViewModel.loadReminders()
+        //then an error message should appear
+        assertThat(remindersListViewModel.showSnackBar.getOrAwaitValue(),`is`("Error has occurred"))
+    }
 }
