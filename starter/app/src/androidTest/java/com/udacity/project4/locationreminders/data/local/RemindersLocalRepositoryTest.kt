@@ -24,7 +24,21 @@ import org.junit.runner.RunWith
 //Medium Test to test the repository
 @MediumTest
 class RemindersLocalRepositoryTest {
-
 //    TODO: Add testing implementation to the RemindersLocalRepository.kt
-
+    // Executes each task synchronously using Architecture Components.
+    @get:Rule
+    var instantExecutorRule = InstantTaskExecutorRule()
+    private lateinit var localRepository: RemindersLocalRepository
+    private lateinit var db: RemindersDatabase
+    @Before
+    fun setup(){
+        // Using an in-memory database for testing, because it doesn't survive killing the process.
+        db=Room.inMemoryDatabaseBuilder(
+            ApplicationProvider.getApplicationContext(),
+            RemindersDatabase::class.java
+        ).allowMainThreadQueries().build()
+        localRepository=RemindersLocalRepository(db.reminderDao(),Dispatchers.Main)
+    }
+    @After
+    fun close()=db.close()
 }
