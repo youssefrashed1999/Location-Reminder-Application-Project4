@@ -16,6 +16,7 @@ import com.udacity.project4.locationreminders.RemindersActivity
  * signed in users to the RemindersActivity.
  */
 class AuthenticationActivity : AppCompatActivity() {
+    private var isLoggedOut=false
     companion object{
         const val SIGN_IN_REQUEST_CODE=1001
     }
@@ -23,8 +24,10 @@ class AuthenticationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_authentication)
         //if there is a current user logged in, navigate him
+        isLoggedOut=intent.getBooleanExtra("IsLoggedOut",false)
         val user = FirebaseAuth.getInstance().currentUser
-        if (user != null) {
+        //if the user has just logged out don't execute this block
+        if (user != null && !isLoggedOut) {
             navigate()
         }
         //set on click listener on the sign in button to begin the sign in flow
