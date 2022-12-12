@@ -65,4 +65,17 @@ class RemindersDaoTest {
         //THEN - the loaded list contains 2 reminders
         assertThat(loadedlist.size,`is`(2))
     }
+    @Test
+    fun insertRemindersAndDeleteThem()= runBlockingTest {
+        //GIVEN - insert 2 reminders
+        val reminder1=ReminderDTO("Youssef","Mohamed","Rashed",1.0,1.0)
+        val reminder2=ReminderDTO("Mohamed","Ahmed","Mabrouk",2.0,2.0)
+        db.reminderDao().saveReminder(reminder1)
+        db.reminderDao().saveReminder(reminder2)
+        //WHEN - delete the reminders from the database and get them
+        db.reminderDao().deleteAllReminders()
+        val loadedlist=db.reminderDao().getReminders()
+        //THEN - the loaded list is empty
+        assertThat(loadedlist.isEmpty(),`is`(true))
+    }
 }
