@@ -3,10 +3,12 @@ package com.udacity.project4.authentication
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.udacity.project4.R
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
+import com.google.firebase.auth.FirebaseAuth
 import com.udacity.project4.locationreminders.RemindersActivity
 
 /**
@@ -20,6 +22,15 @@ class AuthenticationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_authentication)
+        //if there is a current user logged in, navigate him
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user != null) {
+            navigate()
+        }
+        //set on click listener on the sign in button to begin the sign in flow
+        findViewById<Button>(R.id.login_button).setOnClickListener {
+            launchSignInFlow()
+        }
     }
     //TODO: Implement the create account and sign in using FirebaseUI, use sign in using email and sign in using Google
     private fun launchSignInFlow() {
