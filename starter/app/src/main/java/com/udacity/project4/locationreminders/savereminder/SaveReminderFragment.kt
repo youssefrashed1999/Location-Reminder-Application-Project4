@@ -27,11 +27,11 @@ import com.udacity.project4.locationreminders.geofence.GeofenceBroadcastReceiver
 import com.udacity.project4.locationreminders.reminderslist.ReminderDataItem
 import com.udacity.project4.utils.setDisplayHomeAsUpEnabled
 import org.koin.android.ext.android.inject
-//private const val REQUEST_FOREGROUND_AND_BACKGROUND_PERMISSION_RESULT_CODE = 33
-//private const val REQUEST_FOREGROUND_ONLY_PERMISSIONS_REQUEST_CODE = 34
-//private const val REQUEST_TURN_DEVICE_LOCATION_ON = 29
-//private const val LOCATION_PERMISSION_INDEX = 0
-//private const val BACKGROUND_LOCATION_PERMISSION_INDEX = 1
+private const val REQUEST_FOREGROUND_AND_BACKGROUND_PERMISSION_RESULT_CODE = 33
+private const val REQUEST_FOREGROUND_ONLY_PERMISSIONS_REQUEST_CODE = 34
+private const val REQUEST_TURN_DEVICE_LOCATION_ON = 29
+private const val LOCATION_PERMISSION_INDEX = 0
+private const val BACKGROUND_LOCATION_PERMISSION_INDEX = 1
 class SaveReminderFragment : BaseFragment() {
     companion object{
         internal const val ACTION_GEOFENCE_EVENT="SaveReminderFragment.reminder.action.ACTION_GEOFENCE_EVENT"
@@ -89,23 +89,23 @@ class SaveReminderFragment : BaseFragment() {
         }
     }
     //check if permissions are granted,if not ask for them
-//    @TargetApi(29)
-//    private fun foregroundAndBackgroundLocationPermissionApproved(): Boolean {
-//        val foregroundLocationApproved = (
-//                PackageManager.PERMISSION_GRANTED ==
-//                        ActivityCompat.checkSelfPermission(requireContext(),
-//                            Manifest.permission.ACCESS_FINE_LOCATION))
-//        val backgroundPermissionApproved =
-//            if (runningQOrLater) {
-//                PackageManager.PERMISSION_GRANTED ==
-//                        ActivityCompat.checkSelfPermission(
-//                            requireContext(), Manifest.permission.ACCESS_BACKGROUND_LOCATION
-//                        )
-//            } else {
-//                true
-//            }
-//        return foregroundLocationApproved && backgroundPermissionApproved
-//    }
+    @TargetApi(29)
+    private fun foregroundAndBackgroundLocationPermissionApproved(): Boolean {
+        val foregroundLocationApproved = (
+                PackageManager.PERMISSION_GRANTED ==
+                        ActivityCompat.checkSelfPermission(requireContext(),
+                            Manifest.permission.ACCESS_FINE_LOCATION))
+        val backgroundPermissionApproved =
+            if (runningQOrLater) {
+                PackageManager.PERMISSION_GRANTED ==
+                        ActivityCompat.checkSelfPermission(
+                            requireContext(), Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                        )
+            } else {
+                true
+            }
+        return foregroundLocationApproved && backgroundPermissionApproved
+    }
 //    //request from user to grant location permissions
 //    @TargetApi(29 )
 //    private fun requestForegroundAndBackgroundLocationPermissions() {
