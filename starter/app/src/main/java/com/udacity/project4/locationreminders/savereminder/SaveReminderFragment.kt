@@ -77,15 +77,15 @@ class SaveReminderFragment : BaseFragment() {
             val location = _viewModel.reminderSelectedLocationStr.value
             val latitude = _viewModel.latitude.value
             val longitude = _viewModel.longitude.value
-//            reminder= ReminderDataItem(title,description,location,latitude,longitude)
-//            //validate the entered data and start the geofence
-//            if(_viewModel.validateEnteredData(reminder)){
-//                if(foregroundAndBackgroundLocationPermissionApproved()){
-//                    checkDeviceLocationSettingsAndStartGeofence()
-//                }
-//                else
-//                    requestForegroundAndBackgroundLocationPermissions()
-//            }
+            reminder= ReminderDataItem(title,description,location,latitude,longitude)
+            //validate the entered data and start the geofence
+            if(_viewModel.validateEnteredData(reminder)){
+                if(foregroundAndBackgroundLocationPermissionApproved()){
+                    checkDeviceLocationSettingsAndStartGeofence()
+                }
+                else
+                    requestForegroundAndBackgroundLocationPermissions()
+            }
         }
     }
     //check if permissions are granted,if not ask for them
