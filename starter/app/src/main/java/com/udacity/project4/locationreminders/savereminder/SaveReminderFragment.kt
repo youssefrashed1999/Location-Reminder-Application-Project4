@@ -106,21 +106,21 @@ class SaveReminderFragment : BaseFragment() {
             }
         return foregroundLocationApproved && backgroundPermissionApproved
     }
-//    //request from user to grant location permissions
-//    @TargetApi(29 )
-//    private fun requestForegroundAndBackgroundLocationPermissions() {
-//        if (foregroundAndBackgroundLocationPermissionApproved())
-//            return
-//        var permissionsArray = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
-//        val resultCode = when {
-//            runningQOrLater -> {
-//                permissionsArray += Manifest.permission.ACCESS_BACKGROUND_LOCATION
-//                REQUEST_FOREGROUND_AND_BACKGROUND_PERMISSION_RESULT_CODE
-//            }
-//            else -> REQUEST_FOREGROUND_ONLY_PERMISSIONS_REQUEST_CODE
-//        }
-//        requestPermissions(permissionsArray,resultCode)
-//    }
+    //request from user to grant location permissions
+    @TargetApi(29 )
+    private fun requestForegroundAndBackgroundLocationPermissions() {
+        if (foregroundAndBackgroundLocationPermissionApproved())
+            return
+        var permissionsArray = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
+        val resultCode = when {
+            runningQOrLater -> {
+                permissionsArray += Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                REQUEST_FOREGROUND_AND_BACKGROUND_PERMISSION_RESULT_CODE
+            }
+            else -> REQUEST_FOREGROUND_ONLY_PERMISSIONS_REQUEST_CODE
+        }
+        requestPermissions(permissionsArray,resultCode)
+    }
 //    //handles permissions
 //    override fun onRequestPermissionsResult(
 //        requestCode: Int,
