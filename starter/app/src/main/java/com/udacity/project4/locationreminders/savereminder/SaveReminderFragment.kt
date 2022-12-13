@@ -40,7 +40,7 @@ class SaveReminderFragment : BaseFragment() {
     override val _viewModel: SaveReminderViewModel by inject()
     private lateinit var binding: FragmentSaveReminderBinding
     private lateinit var geofencingClient:GeofencingClient
-    //private lateinit var reminder:ReminderDataItem
+    private lateinit var reminder:ReminderDataItem
     //check what api the device is running
     private val runningQOrLater = android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q
     private val geoFencePendingIntent: PendingIntent by lazy {
@@ -181,23 +181,23 @@ class SaveReminderFragment : BaseFragment() {
         }
     }
 //    //add the geofence
-//    @SuppressLint("MissingPermission")
-//    private fun addGeofenceForClue(){
-//        val currentGeoFenceReminder=reminder
-//        val geofence= Geofence.Builder().setRequestId(currentGeoFenceReminder.id)
-//            .setCircularRegion(currentGeoFenceReminder.latitude!!,currentGeoFenceReminder.longitude!!,100f)
-//            .setExpirationDuration(Geofence.NEVER_EXPIRE)
-//            .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
-//            .build()
-//        val geofencingRequest= GeofencingRequest.Builder().setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
-//            .addGeofence(geofence)
-//            .build()
-//        geofencingClient.addGeofences(geofencingRequest,geoFencePendingIntent).run {
-//            addOnSuccessListener {
-//                _viewModel.validateAndSaveReminder(reminder)
-//            }
-//        }
-//    }
+    @SuppressLint("MissingPermission")
+    private fun addGeofenceForClue(){
+        val currentGeoFenceReminder=reminder
+        val geofence= Geofence.Builder().setRequestId(currentGeoFenceReminder.id)
+            .setCircularRegion(currentGeoFenceReminder.latitude!!,currentGeoFenceReminder.longitude!!,100f)
+            .setExpirationDuration(Geofence.NEVER_EXPIRE)
+            .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
+            .build()
+        val geofencingRequest= GeofencingRequest.Builder().setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
+            .addGeofence(geofence)
+            .build()
+        geofencingClient.addGeofences(geofencingRequest,geoFencePendingIntent).run {
+            addOnSuccessListener {
+                _viewModel.validateAndSaveReminder(reminder)
+            }
+        }
+    }
     override fun onDestroy() {
         super.onDestroy()
         //make sure to clear the view model after destroy, as it's a single view model.
