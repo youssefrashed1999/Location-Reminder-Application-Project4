@@ -122,34 +122,34 @@ class SaveReminderFragment : BaseFragment() {
         requestPermissions(permissionsArray,resultCode)
     }
 //    //handles permissions
-//    override fun onRequestPermissionsResult(
-//        requestCode: Int,
-//        permissions: Array<String>,
-//        grantResults: IntArray
-//    ) {
-//        if (
-//            grantResults.isEmpty() ||
-//            grantResults[LOCATION_PERMISSION_INDEX] == PackageManager.PERMISSION_DENIED ||
-//            (requestCode == REQUEST_FOREGROUND_AND_BACKGROUND_PERMISSION_RESULT_CODE &&
-//                    grantResults[BACKGROUND_LOCATION_PERMISSION_INDEX] ==
-//                    PackageManager.PERMISSION_DENIED))
-//        {
-//            Snackbar.make(
-//                this.view!!,
-//                R.string.permission_denied_explanation,
-//                Snackbar.LENGTH_INDEFINITE
-//            )
-//                .setAction(R.string.settings) {
-//                    startActivity(Intent().apply {
-//                        action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-//                        data = Uri.fromParts("package", BuildConfig.APPLICATION_ID, null)
-//                        flags = Intent.FLAG_ACTIVITY_NEW_TASK
-//                    })
-//                }.show()
-//        } else {
-//            checkDeviceLocationSettingsAndStartGeofence()
-//        }
-//    }
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        if (
+            grantResults.isEmpty() ||
+            grantResults[LOCATION_PERMISSION_INDEX] == PackageManager.PERMISSION_DENIED ||
+            (requestCode == REQUEST_FOREGROUND_AND_BACKGROUND_PERMISSION_RESULT_CODE &&
+                    grantResults[BACKGROUND_LOCATION_PERMISSION_INDEX] ==
+                    PackageManager.PERMISSION_DENIED))
+        {
+            Snackbar.make(
+                this.view!!,
+                R.string.permission_denied_explanation,
+                Snackbar.LENGTH_INDEFINITE
+            )
+                .setAction(R.string.settings) {
+                    startActivity(Intent().apply {
+                        action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                        data = Uri.fromParts("package", BuildConfig.APPLICATION_ID, null)
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                    })
+                }.show()
+        } else {
+            checkDeviceLocationSettingsAndStartGeofence()
+        }
+    }
 //    private fun checkDeviceLocationSettingsAndStartGeofence(resolve:Boolean = true) {
 //        val locationRequest = LocationRequest.create().apply {
 //            priority = LocationRequest.PRIORITY_LOW_POWER
