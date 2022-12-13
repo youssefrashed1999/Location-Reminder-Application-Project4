@@ -150,36 +150,36 @@ class SaveReminderFragment : BaseFragment() {
             checkDeviceLocationSettingsAndStartGeofence()
         }
     }
-//    private fun checkDeviceLocationSettingsAndStartGeofence(resolve:Boolean = true) {
-//        val locationRequest = LocationRequest.create().apply {
-//            priority = LocationRequest.PRIORITY_LOW_POWER
-//        }
-//        val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
-//        val settingsClient = LocationServices.getSettingsClient(requireActivity())
-//        val locationSettingsResponseTask =
-//            settingsClient.checkLocationSettings(builder.build())
-//        locationSettingsResponseTask.addOnFailureListener { exception ->
-//            if (exception is ResolvableApiException && resolve){
-//                try {
-//                    startIntentSenderForResult(exception.resolution.intentSender, REQUEST_TURN_DEVICE_LOCATION_ON,
-//                        null, 0,0,0, null)
-//                } catch (sendEx: IntentSender.SendIntentException) {
-//                }
-//            } else {
-//                Snackbar.make(
-//                    this.view!!,
-//                    R.string.location_required_error, Snackbar.LENGTH_INDEFINITE
-//                ).setAction(android.R.string.ok) {
-//                    checkDeviceLocationSettingsAndStartGeofence()
-//                }.show()
-//            }
-//        }
-//        locationSettingsResponseTask.addOnCompleteListener {
-//            if ( it.isSuccessful ) {
-//                addGeofenceForClue()
-//            }
-//        }
-//    }
+    private fun checkDeviceLocationSettingsAndStartGeofence(resolve:Boolean = true) {
+        val locationRequest = LocationRequest.create().apply {
+            priority = LocationRequest.PRIORITY_LOW_POWER
+        }
+        val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
+        val settingsClient = LocationServices.getSettingsClient(requireActivity())
+        val locationSettingsResponseTask =
+            settingsClient.checkLocationSettings(builder.build())
+        locationSettingsResponseTask.addOnFailureListener { exception ->
+            if (exception is ResolvableApiException && resolve){
+                try {
+                    startIntentSenderForResult(exception.resolution.intentSender, REQUEST_TURN_DEVICE_LOCATION_ON,
+                        null, 0,0,0, null)
+                } catch (sendEx: IntentSender.SendIntentException) {
+                }
+            } else {
+                Snackbar.make(
+                    this.view!!,
+                    R.string.location_required_error, Snackbar.LENGTH_INDEFINITE
+                ).setAction(android.R.string.ok) {
+                    checkDeviceLocationSettingsAndStartGeofence()
+                }.show()
+            }
+        }
+        locationSettingsResponseTask.addOnCompleteListener {
+            if ( it.isSuccessful ) {
+                addGeofenceForClue()
+            }
+        }
+    }
 //    //add the geofence
 //    @SuppressLint("MissingPermission")
 //    private fun addGeofenceForClue(){
