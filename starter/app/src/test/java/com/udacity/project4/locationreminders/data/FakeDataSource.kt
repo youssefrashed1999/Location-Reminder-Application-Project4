@@ -33,7 +33,7 @@ private var shouldReturnError=false
         if(reminder!=null)
             return Result.Success(reminder)
         else
-            return Result.Error("No reminder with this ID")
+            return Result.Error("Reminder not found!")
     }
 
 

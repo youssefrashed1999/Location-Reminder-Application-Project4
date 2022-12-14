@@ -96,5 +96,8 @@ class RemindersLocalRepositoryTest {
         val result=localRepository.getReminder("WSXR")
         //THEN -error occurred
         assertThat(result.error,`is`(true))
+        result as Result.Error
+        //Checking the message returned is the correct message
+        assertThat(result.message,`is`("Reminder not found!"))
     }
 }
