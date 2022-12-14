@@ -112,8 +112,7 @@ class SelectLocationFragment : BaseFragment(),OnMapReadyCallback {
             zoomToMyLocation()
         }
         else {
-            ActivityCompat.requestPermissions(
-                requireActivity(),
+            this.requestPermissions(
                 arrayOf<String>(Manifest.permission.ACCESS_FINE_LOCATION),
                 REQUEST_LOCATION_PERMISSION
             )
