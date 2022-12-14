@@ -43,10 +43,14 @@ class SaveReminderFragment : BaseFragment() {
     private lateinit var reminder:ReminderDataItem
     //check what api the device is running
     private val runningQOrLater = android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q
+    val flags= if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S){
+        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
+    }else{PendingIntent.FLAG_UPDATE_CURRENT}
+
     private val geoFencePendingIntent: PendingIntent by lazy {
         val intent= Intent(requireContext(), GeofenceBroadcastReceiver::class.java)
         intent.action= ACTION_GEOFENCE_EVENT
-        PendingIntent.getBroadcast(requireContext(),0,intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        PendingIntent.getBroadcast(requireContext(),0,intent,flags)
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
