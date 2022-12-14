@@ -12,6 +12,7 @@ import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -128,6 +129,26 @@ class SelectLocationFragment : BaseFragment(),OnMapReadyCallback {
             if (grantResults.size > 0 && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                 enableMyLocation()
             }
+            else{
+                explain()
+            }
+        }
+    }
+    private fun explain() {
+        if (
+            ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
+        ) {
+            AlertDialog.Builder(requireActivity())
+                .setTitle("Location permision")
+                .setMessage(R.string.permission_denied_explanation)
+                .setPositiveButton("OK"){ _, _ ->
+                    enableMyLocation()
+                }
+                .create()
+                .show()
+
+        } else {
+            enableMyLocation()
         }
     }
     //zooms to the user's current location
